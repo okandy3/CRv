@@ -1,1 +1,1 @@
-export const URL = 'http://localhost:5400'
+export const URL = 'https://your-localtunnel-url.loca.lt'

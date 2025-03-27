@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-react
+spec:
+  replicas: 1  # Pas besoin d'autoscaling ici
+  selector:
+    matchLabels:
+      app: redis-react
+  template:
+    metadata:
+      labels:
+        app: redis-react
+    spec:
+      containers:
+      - name: redis-react
+        image: mon-registry/redis-react:latest  # Remplacez par votre image
+        ports:
+        - containerPort: 80
+        env:
+        - name: REACT_APP_BACKEND_URL
+          value: "http://redis-node:3000"  # L'URL de l'API Node.js

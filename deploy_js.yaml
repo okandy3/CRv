@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-node
+spec:
+  replicas: 2  # On démarre avec 2 pods
+  selector:
+    matchLabels:
+      app: redis-node
+  template:
+    metadata:
+      labels:
+        app: redis-node
+    spec:
+      containers:
+      - name: redis-node
+        image: mon-registry/redis-node:latest  # Remplacez par votre image
+        ports:
+        - containerPort: 3000
+        env:
+        - name: REDIS_MASTER_HOST
+          value: "redis-master"
+        - name: REDIS_REPLICA_HOST
+          value: "redis-replica"
+        - name: PORT
+          value: "3000"

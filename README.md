@@ -23,14 +23,11 @@ Déploiement Kubernetes
     1. [Étapes de déploiement](#étapes-de-déploiement)
 5. [Mise en Place de Prometheus et Grafana](#mise-en-place-de-prometheus-et-grafana)
 6. [Automatisation via Scripts](#automatisation-via-scripts)
-7. [Surveillance et Alerte](#surveillance-et-alerte)
-8. [Vérification du Fonctionnement](#vérification-du-fonctionnement)
-9. [Fichiers du Projet](#fichiers-du-projet)
-10. [Licence](#licence)
+
 
 ---
 
-## 🛠 ** Introduction**
+## 🛠 **1. Introduction**
 
 Ce projet consiste à déployer une **application stateless Node.js** connectée à une **base de données Redis**, le tout orchestré avec **Kubernetes**. Des outils de **monitoring**, comme **Prometheus** et **Grafana**, seront également mis en place pour surveiller les performances de l'infrastructure.
 
@@ -47,7 +44,7 @@ Avant de commencer le déploiement, assurez-vous d'avoir les outils suivants ins
 
 ---
 
-## 🏗 ** Architecture du Projet**
+## 🏗 **3. Architecture du Projet**
 
 Voici l'architecture du projet :
 
@@ -95,7 +92,7 @@ crv
 │   ├── update_nodejs.sh
 ├── README.md
 
-# Déploiement Kubernetes
+#4. Déploiement Kubernetes
 Étapes de déploiement
 Voici les étapes pour déployer l'infrastructure Kubernetes à l'aide des fichiers YAML fournis :
 
@@ -140,7 +137,7 @@ kubectl apply -f k8s/monitoring/prometheus_service.yaml
 kubectl apply -f k8s/monitoring/deploy_grafana.yaml
 kubectl apply -f k8s/monitoring/grafana_service.yaml
 
-# Mise en Place de Prometheus et Grafana
+#5. Mise en Place de Prometheus et Grafana
 Prometheus est configuré pour surveiller le backend Node.js et Redis. Le tableau de bord Grafana est pré-configuré pour afficher les données de performance et de scaling.
 
 Accéder à Prometheus :
@@ -161,7 +158,7 @@ Accédez ensuite à http://localhost:3000 avec les identifiants par défaut :
 Username : admin
 Password : admin
 
-# Automatisation via Scripts
+#6. Automatisation via Scripts
 ***Vous avez plusieurs scripts disponibles pour faciliter le déploiement, la mise à l'échelle, et la gestion de votre infrastructure Kubernetes :***
 
 deploy_all.sh : Déploie toutes les ressources nécessaires (backend, frontend, Redis, Prometheus, Grafana).

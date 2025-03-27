@@ -165,12 +165,31 @@ Password : admin
 ***Vous avez plusieurs scripts disponibles pour faciliter le déploiement, la mise à l'échelle, et la gestion de votre infrastructure Kubernetes :***
 
 deploy_all.sh : Déploie toutes les ressources nécessaires (backend, frontend, Redis, Prometheus, Grafana).
+commande : 
+chmod +x script/deploy_all.sh
+./script/deploy_all.sh
+
 
 delete_all.sh : Supprime toutes les ressources Kubernetes du cluster.
+commande :
+chmod +x script/delete_all.sh
+./script/delete_all.sh
+
 
 scale_test.sh : Simule une charge pour tester l’AutoScaling de Redis.
+commande : 
+chmod +x script/scale_test.sh
+./script/scale_test.sh
+
 
 status.sh : Affiche l'état des pods, services, et HPA.
+commande :
+chmod +x script/status.sh
+./script/status.sh
 
-update_nodejs.sh : Met à jour l’image Docker de votre serveur Node.js dans Kubernetes.
+update_nodejs.sh : Met à jour l’image Docker de 
+chmod +x script/update_nodejs.sh
+commande :
+./script/update_nodejs.sh
+votre serveur Node.js dans Kubernetes.
 

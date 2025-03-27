@@ -46,53 +46,9 @@ Avant de commencer le déploiement, assurez-vous d'avoir les outils suivants ins
 
 ## 🏗 **3. Architecture du Projet**
 
-Voici l'architecture du projet :
+crv ├── backend │ ├── .dockerignore │ ├── .gitignore │ ├── Dockerfile │ ├── main.js │ ├── package.json │ ├── yarn.lock ├── frontend │ ├── public/ │ ├── src/ │ ├── Dockerfile │ ├── package.json │ └── yarn.lock ├── k8s │ ├── backend │ │ ├── autoscaling_js.yaml │ │ ├── deploy_js.yaml │ │ ├── service_js.yaml │ ├── frontend │ │ ├── deploy_react.yaml │ │ └── react_service.yaml │ ├── database │ │ ├── redis_autoscaling.yaml │ │ ├── redis_master_service.yaml │ │ ├── redis_replicas_service.yaml │ │ ├── redis_master.yaml │ │ ├── redis_replicas.yaml │ │ ├── redis_reporter_service.yaml │ │ └── redis_reporter.yaml │ ├── monitoring │ │ ├── deploy_grafana.yaml │ │ ├── deploy_prometheus.yaml │ │ ├── prometheus_config.yaml │ │ ├── prometheus_service.yaml │ │ └── grafana_service.yaml ├── script │ ├── delete_all.sh │ ├── deploy_all.sh │ ├── scale_test.sh │ ├── status.sh │ ├── update_nodejs.sh ├── README.md
 
-crv
-├── backend
-│   ├── .dockerignore
-│   ├── .gitignore
-│   ├── Dockerfile
-│   ├── main.js
-│   ├── package.json
-│   ├── yarn.lock
-├── frontend
-│   ├── public/
-│   ├── src/
-│   ├── Dockerfile
-│   ├── package.json
-│   └── yarn.lock
-├── k8s
-│   ├── backend
-│   │   ├── autoscaling_js.yaml
-│   │   ├── deploy_js.yaml
-│   │   ├── service_js.yaml
-│   ├── frontend
-│   │   ├── deploy_react.yaml
-│   │   └── react_service.yaml
-│   ├── database
-│   │   ├── redis_autoscaling.yaml
-│   │   ├── redis_master_service.yaml
-│   │   ├── redis_replicas_service.yaml
-│   │   ├── redis_master.yaml
-│   │   ├── redis_replicas.yaml
-│   │   ├── redis_reporter_service.yaml
-│   │   └── redis_reporter.yaml
-│   ├── monitoring
-│   │   ├── deploy_grafana.yaml
-│   │   ├── deploy_prometheus.yaml
-│   │   ├── promeu_config.yaml
-│   │   ├── promeu_service.yaml
-│   │   └── grafana_service.yaml
-├── script
-│   ├── delete_all.sh
-│   ├── deploy_all.sh
-│   ├── scale_test.sh
-│   ├── status.sh
-│   ├── update_nodejs.sh
-├── README.md
-
-#4. Déploiement Kubernetes
+# 4. Déploiement Kubernetes
 Étapes de déploiement
 Voici les étapes pour déployer l'infrastructure Kubernetes à l'aide des fichiers YAML fournis :
 
@@ -137,7 +93,7 @@ kubectl apply -f k8s/monitoring/prometheus_service.yaml
 kubectl apply -f k8s/monitoring/deploy_grafana.yaml
 kubectl apply -f k8s/monitoring/grafana_service.yaml
 
-#5. Mise en Place de Prometheus et Grafana
+# 5. Mise en Place de Prometheus et Grafana
 Prometheus est configuré pour surveiller le backend Node.js et Redis. Le tableau de bord Grafana est pré-configuré pour afficher les données de performance et de scaling.
 
 Accéder à Prometheus :
@@ -158,7 +114,7 @@ Accédez ensuite à http://localhost:3000 avec les identifiants par défaut :
 Username : admin
 Password : admin
 
-#6. Automatisation via Scripts
+# 6. Automatisation via Scripts
 ***Vous avez plusieurs scripts disponibles pour faciliter le déploiement, la mise à l'échelle, et la gestion de votre infrastructure Kubernetes :***
 
 deploy_all.sh : Déploie toutes les ressources nécessaires (backend, frontend, Redis, Prometheus, Grafana).

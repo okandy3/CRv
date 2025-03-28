@@ -1,26 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: redis-node
+  name: backend-deployment
 spec:
-  replicas: 2  # On démarre avec 2 pods
+  replicas: 1
   selector:
     matchLabels:
-      app: redis-node
+      app: backend
   template:
     metadata:
       labels:
-        app: redis-node
+        app: backend
     spec:
       containers:
-      - name: redis-node
-        image: mon-registry/redis-node:latest  # Remplacez par votre image
+      - name: backend
+        image: redis-nodejs-backend:latest  # L'image Docker du backend
         ports:
         - containerPort: 3000
-        env:
-        - name: REDIS_MASTER_HOST
-          value: "redis-master"
-        - name: REDIS_REPLICA_HOST
-          value: "redis-replica"
-        - name: PORT
-          value: "3000"

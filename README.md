@@ -9,6 +9,8 @@ Prérequis
 
 Architecture du Projet
 
+Création de mes images
+
 Déploiement Kubernetes
 
 Étapes de déploiement
@@ -73,8 +75,8 @@ crv
 │   │   ├── redis_replicas_service.yaml  
 │   │   ├── redis_master.yaml  
 │   │   ├── redis_replicas.yaml  
-│   │   ├── redis_reporter_service.yaml  
-│   │   └── redis_reporter.yaml  
+│   │    
+│   │     
 │   ├── monitoring  
 │   │   ├── deploy_grafana.yaml  
 │   │   ├── deploy_promeu.yaml  
@@ -89,8 +91,39 @@ crv
 │   ├── update_nodejs.sh  
 ├── README.md  
 
+## 4. Création des images 
 
-## 4. Déploiement Kubernetes
+***Créer l'Image Docker pour le Backend Node.js***
+
+cd crv/backend
+
+docker build -t redis-nodejs-backend:latest .
+
+
+
+Vérifier la création de l'image :
+docker images
+
+docker push node_js/backend-nodejs:latest
+
+***Créer l'Image Docker pour le Frontend React***
+
+cd crv/frontend
+
+docker build -t redis-nodejs-frontend:latest .
+
+
+***Créer l'image officielle Redis***
+
+docker pull redis
+
+
+***Docker depuis Minikube***
+
+eval $(minikube -p minikube docker-env)
+
+
+## 5. Déploiement Kubernetes
 Étapes de déploiement
 Voici les étapes pour déployer l'infrastructure Kubernetes à l'aide des fichiers YAML fournis :
 
@@ -108,10 +141,11 @@ Naviguez dans le répertoire k8s/backend/ et déployez le backend avec le fichie
 
 ***commandes :***
 
-kubectl apply -f k8s/backend/deploy_js.yaml
+kubectl apply -f deploy_js.yaml
 
-kubectl apply -f k8s/backend/service_js.yaml
+kubectl apply -f service_js.yaml
 
+kubectl apply -f autoscaling_js.yaml
 
 
 ***Déployer le Frontend React (non scalé)***
@@ -120,9 +154,9 @@ Naviguez dans le répertoire k8s/frontend/ et déployez le frontend.
 
 ***commmandes :*** 
 
-kubectl apply -f k8s/frontend/deploy_react.yaml
+kubectl apply -f deploy_react.yaml
 
-kubectl apply -f k8s/frontend/react_service.yaml
+kubectl apply -f react_service.yaml
 
 
 
@@ -132,16 +166,15 @@ Allez dans le dossier k8s/database/ et appliquez les fichiers de déploiement Re
 
 ***commandes :*** 
 
-kubectl apply -f k8s/database/redis_master.yaml
+kubectl apply -f redis_master.yaml
 
-kubectl apply -f k8s/database/redis_replicas.yaml
+kubectl apply -f redis_replicas.yaml
 
-kubectl apply -f k8s/database/
-redis_master_service.yaml
+kubectl apply -f redis_master_service.yaml
 
-kubectl apply -f k8s/database/redis_replicas_service.yaml
+kubectl apply -f redis_replicas_service.yaml
 
-kubectl apply -f k8s/database/redis_autoscaling.yaml
+kubectl apply -f redis_autoscaling.yaml
 
 
 
@@ -151,23 +184,31 @@ Allez dans le répertoire k8s/monitoring/ et déployez Prometheus et Grafana.
 
 ***commandes :***
 
-kubectl apply -f k8s/monitoring/deploy_prometheus.yaml
+kubectl apply -f deploy_promeu.yaml
 
-kubectl apply -f k8s/monitoring/prometheus_service.yaml
+kubectl apply -f promeu_service.yaml
 
-kubectl apply -f k8s/monitoring/deploy_grafana.yaml
+kubectl apply -f deploy_grafana.yaml
 
-kubectl apply -f k8s/monitoring/grafana_service.yaml
+kubectl apply -f grafana_service.yaml
 
 
-## 5. Mise en Place de Prometheus et Grafana
+kubectl create namespace monitoring
+
+kubectl apply -f deploy_promeu.yaml -n monitoring
+
+kubectl apply -f promeu_service.yaml -n monitoring
+
+
+
+## 6. Mise en Place de Prometheus et Grafana
 Prometheus est configuré pour surveiller le backend Node.js et Redis. Le tableau de bord Grafana est pré-configuré pour afficher les données de performance et de scaling.
 
 Accéder à Prometheus :
 Après avoir déployé Prometheus, vous pouvez y accéder via son service Kubernetes exposé (en utilisant kubectl port-forward ou en configurant un service de type LoadBalancer).
 
 commande : 
-kubectl port-forward svc/prometheus-server 8080:8080
+kubectl port-forward svc/prometheus-server 9090:9090
 
 Accédez ensuite à http://localhost:8080 dans votre navigateur.
 
@@ -181,7 +222,7 @@ Accédez ensuite à http://localhost:3000 avec les identifiants par défaut :
 Username : admin
 Password : admin
 
-## 6. Automatisation via Scripts
+## 7. Automatisation via Scripts
 ***Vous avez plusieurs scripts disponibles pour faciliter le déploiement, la mise à l'échelle, et la gestion de votre infrastructure Kubernetes :***
 
 ***deploy_all.sh :***
@@ -227,6 +268,7 @@ chmod +x script/status.sh
 ***update_nodejs.sh :*** Met à jour l’image Docker de votre serveur Node.js dans Kubernetes.
 \
 ***commande :***
+\
 chmod +x script/update_nodejs.sh
 \
 ./script/update_nodejs.sh

@@ -39,7 +39,6 @@ Avant de commencer le déploiement, assurez-vous d'avoir les outils suivants ins
 - [Docker](https://www.docker.com/products/docker-desktop)
 - [Kubernetes (kubectl)](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 - [Minikube](https://minikube.sigs.k8s.io/docs/) ou un cluster Kubernetes fonctionnel
-- [Helm (optionnel pour certaines configurations)](https://helm.sh/docs/intro/install/)
 - [Prometheus](https://prometheus.io/docs/introduction/overview/) et [Grafana](https://grafana.com/docs/grafana/latest/getting-started/)
 
 ---
@@ -185,47 +184,49 @@ Password : admin
 ## 6. Automatisation via Scripts
 ***Vous avez plusieurs scripts disponibles pour faciliter le déploiement, la mise à l'échelle, et la gestion de votre infrastructure Kubernetes :***
 
-deploy_all.sh : Déploie toutes les ressources nécessaires (backend, frontend, Redis, Prometheus, Grafana).
+***deploy_all.sh :***
+Déploie toutes les ressources nécessaires (backend, frontend, Redis, Prometheus, Grafana).
 \
-commande : 
+***commande :***
+\
 chmod +x script/deploy_all.sh
+\
 ./script/deploy_all.sh
 \
 \
-delete_all.sh : Supprime toutes les ressources Kubernetes du cluster.
+***delete_all.sh :***
+Supprime toutes les ressources Kubernetes du cluster.
 \
-commande :
+***commande :***
 \
 chmod +x script/delete_all.sh
 \
 ./script/delete_all.sh
-
 \
 \
-scale_test.sh : Simule une charge pour tester l’AutoScaling de Redis.
+***scale_test.sh :***
+Simule une charge pour tester l’AutoScaling de Redis.
 \
-commande : 
+***commande :*** 
 \
 chmod +x script/scale_test.sh
 \
 ./script/scale_test.sh
 \
 \
-
-status.sh : Affiche l'état des pods, services, et HPA.
+***status.sh :***
+Affiche l'état des pods, services, et HPA.
 \
-
-commande :
+***commande :***
 \
 chmod +x script/status.sh
 \
 ./script/status.sh
 \
 \
-
-update_nodejs.sh : Met à jour l’image Docker de votre serveur Node.js dans Kubernetes.
+***update_nodejs.sh :*** Met à jour l’image Docker de votre serveur Node.js dans Kubernetes.
 \
-commande :
+***commande :***
 chmod +x script/update_nodejs.sh
 \
 ./script/update_nodejs.sh

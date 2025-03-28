@@ -78,9 +78,9 @@ crv
 │   │   └── redis_reporter.yaml  
 │   ├── monitoring  
 │   │   ├── deploy_grafana.yaml  
-│   │   ├── deploy_prometheus.yaml  
-│   │   ├── prometheus_config.yaml  
-│   │   ├── prometheus_service.yaml  
+│   │   ├── deploy_promeu.yaml  
+│   │   ├── promeu_config.yaml  
+│   │   ├── promeu_service.yaml  
 │   │   └── grafana_service.yaml  
 ├── script  
 │   ├── delete_all.sh  
@@ -103,38 +103,57 @@ Vérifiez que Kubernetes fonctionne :
 
 kubectl get nodes
 
-Déployer le Backend Node.js
+***Déployer le Backend Node.js*** :
+
 Naviguez dans le répertoire k8s/backend/ et déployez le backend avec le fichier deploy_js.yaml 
 
-commandes : 
+***commandes : ***
 kubectl apply -f k8s/backend/deploy_js.yaml
 kubectl apply -f k8s/backend/service_js.yaml
 
-Déployer le Frontend React (non scalé)
+
+
+***Déployer le Frontend React (non scalé)***
+
 Naviguez dans le répertoire k8s/frontend/ et déployez le frontend.
 
-commmandes : 
+***commmandes :*** 
 kubectl apply -f k8s/frontend/deploy_react.yaml
 kubectl apply -f k8s/frontend/react_service.yaml
 
-Déployer Redis avec Autoscaling
+
+
+***Déployer Redis avec Autoscaling***
+
 Allez dans le dossier k8s/database/ et appliquez les fichiers de déploiement Redis.
 
-commandes : 
+***commandes :*** 
 kubectl apply -f k8s/database/redis_master.yaml
+
 kubectl apply -f k8s/database/redis_replicas.yaml
-kubectl apply -f k8s/database/redis_master_service.yaml
+
+kubectl apply -f k8s/database/
+redis_master_service.yaml
+
 kubectl apply -f k8s/database/redis_replicas_service.yaml
+
 kubectl apply -f k8s/database/redis_autoscaling.yaml
 
-Déployer Prometheus et Grafana pour Monitoring
+
+
+***Déployer Prometheus et Grafana pour Monitoring***
+
 Allez dans le répertoire k8s/monitoring/ et déployez Prometheus et Grafana.
 
-commandes : 
+***commandes :***
 kubectl apply -f k8s/monitoring/deploy_prometheus.yaml
+
 kubectl apply -f k8s/monitoring/prometheus_service.yaml
+
 kubectl apply -f k8s/monitoring/deploy_grafana.yaml
+
 kubectl apply -f k8s/monitoring/grafana_service.yaml
+
 
 ## 5. Mise en Place de Prometheus et Grafana
 Prometheus est configuré pour surveiller le backend Node.js et Redis. Le tableau de bord Grafana est pré-configuré pour afficher les données de performance et de scaling.

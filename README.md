@@ -21,11 +21,11 @@ Déploiement Kubernetes
 1. [Introduction](#introduction)
 2. [Prérequis](#prérequis)
 3. [Architecture du Projet](#architecture-du-projet)
-3. [4. Création des images](#Création des images)
-4. [Déploiement Kubernetes](#déploiement-kubernetes)
-    1. [Étapes de déploiement](#étapes-de-déploiement)
-5. [Mise en Place de Prometheus et Grafana](#mise-en-place-de-prometheus-et-grafana)
-6. [Automatisation via Scripts](#automatisation-via-scripts)
+4. [Création des images](#Création-des-images)
+5. [Déploiement Kubernetes](#déploiement-kubernetes)
+    * [Étapes de déploiement](#étapes-de-déploiement)
+6. [Mise en Place de Prometheus et Grafana](#mise-en-place-de-prometheus-et-grafana)
+7. [Automatisation via Scripts](#automatisation-via-scripts)
 
 
 ---

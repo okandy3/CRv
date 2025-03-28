@@ -1,14 +1,13 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
-  name: redis-replica
+  name: redis-replicas-deployment
 spec:
+  replicas: 2  # Le nombre initial de réplicas
   selector:
     matchLabels:
       app: redis
       role: replica
-  serviceName: redis
-  replicas: 2  # On commence avec 2 réplicas
   template:
     metadata:
       labels:
@@ -17,18 +16,6 @@ spec:
     spec:
       containers:
       - name: redis
-        image: redis:latest
+        image: redis:6.2
         ports:
         - containerPort: 6379
-        volumeMounts:
-        - name: data
-          mountPath: /data
-        command: ["redis-server", "--replicaof", "redis-master", "6379"]
-  volumeClaimTemplates:
-  - metadata:
-      name: data
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      resources:
-        requests:
-          storage: 1Gi

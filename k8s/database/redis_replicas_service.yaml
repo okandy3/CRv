@@ -1,13 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: redis-replica
+  name: redis-replicas-service
 spec:
   selector:
     app: redis
     role: replica
   ports:
-  - protocol: TCP
-    port: 6379
-    targetPort: 6379
-  clusterIP: None
+    - port: 6379
+      targetPort: 6379
+  type: ClusterIP

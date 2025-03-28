@@ -42,7 +42,7 @@ kubectl apply -f k8s/monitoring/grafana_service.yaml
 
 
 echo "📊 Déploiement de l’AutoScaler..."
-kubectl apply -f k8s/database/redis_node_hpa.yaml
+kubectl apply -f k8s/database/redis_autoscaling.yaml
 kubectl apply -f k8s/backend/autoscaling_js.yaml
 
 echo "✅ Déploiement terminé !"

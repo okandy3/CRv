@@ -1,18 +1,20 @@
-# Utilisation d'une image Node.js
-FROM node:18-alpine
+# Utiliser une image Node.js officielle comme base
+FROM node:16
 
-# Définition du dossier de travail
-WORKDIR /app
+# Créer et définir le répertoire de travail
+WORKDIR /usr/src/app
 
-# Copie des fichiers nécessaires
-COPY package.json package-lock.json ./
-RUN npm install
+# Copier package.json et yarn.lock
+COPY package.json yarn.lock ./
 
-# Copie du reste du code source
+# Installer les dépendances
+RUN yarn install
+
+# Copier le reste du code source
 COPY . .
 
-# Exposition du port 3000
+# Exposer le port sur lequel l'app va tourner
 EXPOSE 3000
 
-# Commande de démarrage
-CMD ["node", "server.js"]
+# Démarrer le serveur Node.js
+CMD ["node", "main.js"]

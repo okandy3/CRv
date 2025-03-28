@@ -103,12 +103,14 @@ Vérifiez que Kubernetes fonctionne :
 
 kubectl get nodes
 
-***Déployer le Backend Node.js*** :
+***Déployer le Backend Node.js*** 
 
 Naviguez dans le répertoire k8s/backend/ et déployez le backend avec le fichier deploy_js.yaml 
 
-***commandes : ***
+***commandes :***
+
 kubectl apply -f k8s/backend/deploy_js.yaml
+
 kubectl apply -f k8s/backend/service_js.yaml
 
 
@@ -118,7 +120,9 @@ kubectl apply -f k8s/backend/service_js.yaml
 Naviguez dans le répertoire k8s/frontend/ et déployez le frontend.
 
 ***commmandes :*** 
+
 kubectl apply -f k8s/frontend/deploy_react.yaml
+
 kubectl apply -f k8s/frontend/react_service.yaml
 
 
@@ -128,6 +132,7 @@ kubectl apply -f k8s/frontend/react_service.yaml
 Allez dans le dossier k8s/database/ et appliquez les fichiers de déploiement Redis.
 
 ***commandes :*** 
+
 kubectl apply -f k8s/database/redis_master.yaml
 
 kubectl apply -f k8s/database/redis_replicas.yaml
@@ -146,6 +151,7 @@ kubectl apply -f k8s/database/redis_autoscaling.yaml
 Allez dans le répertoire k8s/monitoring/ et déployez Prometheus et Grafana.
 
 ***commandes :***
+
 kubectl apply -f k8s/monitoring/deploy_prometheus.yaml
 
 kubectl apply -f k8s/monitoring/prometheus_service.yaml

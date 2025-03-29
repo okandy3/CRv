@@ -9,6 +9,8 @@ data:
       scrape_interval: 15s
 
     scrape_configs:
-      - job_name: 'kubernetes'
-        kubernetes_sd_configs:
-          - role: pod
+    - job_name: 'nodejs'
+      metrics_path: '/metrics'
+      static_configs:
+       - targets: ['backend-service:3000']  # Nom du service Kubernetes pour le backend
+

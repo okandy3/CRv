@@ -15,5 +15,6 @@ spec:
       containers:
       - name: backend
         image: redis-nodejs-backend:latest  # L'image Docker du backend
+        imagePullPolicy: Never
         ports:
         - containerPort: 3000

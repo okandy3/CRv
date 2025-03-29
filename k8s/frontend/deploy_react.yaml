@@ -15,5 +15,6 @@ spec:
       containers:
       - name: frontend
         image: redis-nodejs-frontend:latest  # L'image Docker du frontend
+        imagePullPolicy: Never
         ports:
         - containerPort: 80

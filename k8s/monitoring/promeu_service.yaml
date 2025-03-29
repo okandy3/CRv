@@ -3,10 +3,9 @@ kind: Service
 metadata:
   name: prometheus
 spec:
+  type: LoadBalancer  # Pour exposer en dehors du cluster
+  ports:
+    - port: 9090
+      targetPort: 9090
   selector:
     app: prometheus
-  ports:
-  - protocol: TCP
-    port: 9090
-    targetPort: 9090
-  type: ClusterIP

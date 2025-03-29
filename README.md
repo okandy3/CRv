@@ -89,10 +89,14 @@ crv
 │   ├── deploy_all.sh  
 │   ├── scale_test.sh  
 │   ├── status.sh  
-│   ├── update_nodejs.sh  
+│   
 ├── README.md  
 
 ## 4. Création des images 
+
+***Docker depuis Minikube***
+
+eval $(minikube -p minikube docker-env)
 
 ***Créer l'Image Docker pour le Backend Node.js***
 
@@ -105,7 +109,6 @@ docker build -t redis-nodejs-backend:latest .
 Vérifier la création de l'image :
 docker images
 
-docker push node_js/backend-nodejs:latest
 
 ***Créer l'Image Docker pour le Frontend React***
 
@@ -119,9 +122,6 @@ docker build -t redis-nodejs-frontend:latest .
 docker pull redis
 
 
-***Docker depuis Minikube***
-
-eval $(minikube -p minikube docker-env)
 
 
 ## 5. Déploiement Kubernetes
@@ -209,9 +209,12 @@ Accéder à Prometheus :
 Après avoir déployé Prometheus, vous pouvez y accéder via son service Kubernetes exposé (en utilisant kubectl port-forward ou en configurant un service de type LoadBalancer).
 
 commande : 
-kubectl port-forward svc/prometheus-server 9090:9090
+kubectl port-forward svc/prometheus 9090:9090
 
-Accédez ensuite à http://localhost:8080 dans votre navigateur.
+Accédez ensuite à http://localhost:9090 dans votre navigateur.
+
+url prometheus : minikube service prometheus --url
+
 
 Accéder à Grafana :
 Grafana est déployé avec un tableau de bord de base pour visualiser les métriques.
@@ -222,6 +225,9 @@ kubectl port-forward svc/grafana 3000:3000
 Accédez ensuite à http://localhost:3000 avec les identifiants par défaut :
 Username : admin
 Password : admin
+
+installation du service metrics-server : kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.5.0/components.yaml
+
 
 ## 7. Automatisation via Scripts
 ***Vous avez plusieurs scripts disponibles pour faciliter le déploiement, la mise à l'échelle, et la gestion de votre infrastructure Kubernetes :***
@@ -264,13 +270,4 @@ Affiche l'état des pods, services, et HPA.
 chmod +x script/status.sh
 \
 ./script/status.sh
-\
-\
-***update_nodejs.sh :*** Met à jour l’image Docker de votre serveur Node.js dans Kubernetes.
-\
-***commande :***
-\
-chmod +x script/update_nodejs.sh
-\
-./script/update_nodejs.sh
 

@@ -3,10 +3,9 @@ kind: Service
 metadata:
   name: grafana
 spec:
+  type: LoadBalancer  # Pour exposer en dehors du cluster
+  ports:
+    - port: 3000
+      targetPort: 3000
   selector:
     app: grafana
-  ports:
-  - protocol: TCP
-    port: 3000
-    targetPort: 3000
-  type: LoadBalancer

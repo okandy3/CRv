@@ -35,6 +35,8 @@ kubectl apply -f k8s/database/redis_master.yaml
 kubectl apply -f k8s/database/redis_replicas.yaml
 kubectl apply -f k8s/database/redis_master_service.yaml
 kubectl apply -f k8s/database/redis_replicas_service.yaml
+kubectl apply -f k8s/database/redis_exporter.yaml
+kubectl apply -f k8s/database/redis_exporter_service.yaml
 
 echo "🚀 Déploiement du serveur Node.js..."
 kubectl apply -f k8s/backend/deploy_js.yaml
@@ -42,7 +44,7 @@ kubectl apply -f k8s/backend/service_js.yaml
 
 echo "🚀 Déploiement du framework React..."
 kubectl apply -f k8s/frontend/deploy_react.yaml
-kubectl apply -f k8s/frontend/service_react.yaml
+kubectl apply -f k8s/frontend/react_service.yaml
 
 echo "🚀 Déploiement du monitoring avec Prometheus et Grafana..."
 kubectl apply -f k8s/monitoring/promeu_config.yaml

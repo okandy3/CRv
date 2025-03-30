@@ -194,13 +194,6 @@ kubectl apply -f deploy_grafana.yaml
 kubectl apply -f grafana_service.yaml
 
 
-kubectl create namespace monitoring
-
-kubectl apply -f deploy_promeu.yaml -n monitoring
-
-kubectl apply -f promeu_service.yaml -n monitoring
-
-
 
 ## 6. Mise en Place de Prometheus et Grafana
 Prometheus est configuré pour surveiller le backend Node.js et Redis. Le tableau de bord Grafana est pré-configuré pour afficher les données de performance et de scaling.

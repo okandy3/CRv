@@ -12,9 +12,13 @@ data:
       - job_name: 'nodejs'
         metrics_path: '/metrics'
         static_configs:
-          - targets: ['backend-service:3000']  # Assurez-vous que ce service existe et expose /metrics
+          - targets: ['backend-service.default.svc.cluster.local:3000']
 
       - job_name: 'redis'
         metrics_path: '/metrics'
         static_configs:
-          - targets: ['redis-master-service:6379']  # Assurez-vous que ce service existe et expose /metrics
+          - targets: ['redis-master-service.default.svc.cluster.local:6379']
+
+      - job_name: 'redis-exporter'
+        static_configs:
+          - targets: ['redis-exporter.default.svc.cluster.local:9121']

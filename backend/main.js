@@ -9,6 +9,10 @@ const REDIS_REPLICAS_URL = process.env.REDIS_REPLICAS_URL || REDIS_URL
 const port = process.env.PORT || 3000
 const UUID = v4()
 
+
+
+
+
 const client = createClient({
   url: REDIS_URL,
 })

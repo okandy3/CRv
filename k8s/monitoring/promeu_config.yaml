@@ -9,8 +9,12 @@ data:
       scrape_interval: 15s
 
     scrape_configs:
-    - job_name: 'nodejs'
-      metrics_path: '/metrics'
-      static_configs:
-       - targets: ['backend-service:3000']  # Nom du service Kubernetes pour le backend
+      - job_name: 'nodejs'
+        metrics_path: '/metrics'
+        static_configs:
+          - targets: ['backend-service:3000']  # Assurez-vous que ce service existe et expose /metrics
 
+      - job_name: 'redis'
+        metrics_path: '/metrics'
+        static_configs:
+          - targets: ['redis-master-service:6379']  # Assurez-vous que ce service existe et expose /metrics

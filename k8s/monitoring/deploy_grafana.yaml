@@ -28,4 +28,4 @@ spec:
       volumes:
       - name: grafana-dashboards
         configMap:
-          name: grafana-dashboards
+          name: grafana-dashboards  # Make sure this ConfigMap exists

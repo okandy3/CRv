@@ -2,9 +2,12 @@ apiVersion: v1
 kind: Service
 metadata:
   name: backend-service
+  labels:
+    app: backend
 spec:
   ports:
-    - port: 3000    # Le port où ton service backend est accessible
-      targetPort: 3000  # Le port sur lequel ton backend écoute
+    - port: 3000        # Le port sur lequel ton service sera accessible à l'intérieur du cluster
+      targetPort: 3000   # Le port sur lequel ton backend écoute
   selector:
-    app: backend    # Le label correspondant à ton déploiement
+    app: backend        # Le label qui permet de sélectionner les pods backend associés à ce service
+  type: ClusterIP       # Spécifie que le service est de type ClusterIP (accès interne uniquement)

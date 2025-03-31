@@ -9,15 +9,21 @@ data:
       scrape_interval: 15s  # Fréquence de récupération des métriques
 
     scrape_configs:
-      - job_name: 'nodejs'
-        metrics_path: '/metrics'
-        static_configs:
-          - targets: ['backend-service.default.svc.cluster.local:3000']  # Assurez-vous que le backend expose bien les métriques
+  - job_name: 'nodejs'
+    metrics_path: '/metrics'
+    scrape_interval: 15s
+    scrape_timeout: 20s  # Augmente le timeout si nécessaire
+    retries: 3  # Nombre de tentatives avant d'échouer
+    static_configs:
+      - targets: ['backend-service.default.svc.cluster.local:3000']
 
-      - job_name: 'redis'
-        metrics_path: '/metrics'
-        static_configs:
-          - targets: ['redis-master-service.default.svc.cluster.local:6379']  # Assurez-vous que Redis expose les métriques
+  - job_name: 'redis'
+    metrics_path: '/metrics'
+    scrape_interval: 15s
+    scrape_timeout: 20s  # Augmente le timeout pour Redis
+    retries: 3
+    static_configs:
+      - targets: ['redis-master-service.default.svc.cluster.local:6379']
 
       - job_name: 'redis-exporter'
         static_configs:

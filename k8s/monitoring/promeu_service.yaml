@@ -2,8 +2,9 @@ apiVersion: v1
 kind: Service
 metadata:
   name: prometheus
+  namespace: default
 spec:
-  type: LoadBalancer  # Pour exposer en dehors du cluster
+  type: LoadBalancer  # Ou ClusterIP si tu veux juste l’utiliser en interne
   ports:
     - port: 9090
       targetPort: 9090

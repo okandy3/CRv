@@ -6,19 +6,19 @@ metadata:
 data:
   prometheus.yml: |
     global:
-      scrape_interval: 15s
+      scrape_interval: 15s  # Fréquence de récupération des métriques
 
     scrape_configs:
       - job_name: 'nodejs'
         metrics_path: '/metrics'
         static_configs:
-          - targets: ['backend-service.default.svc.cluster.local:3000']
+          - targets: ['backend-service.default.svc.cluster.local:3000']  # Assurez-vous que le backend expose bien les métriques
 
       - job_name: 'redis'
         metrics_path: '/metrics'
         static_configs:
-          - targets: ['redis-master-service.default.svc.cluster.local:6379']
+          - targets: ['redis-master-service.default.svc.cluster.local:6379']  # Assurez-vous que Redis expose les métriques
 
       - job_name: 'redis-exporter'
         static_configs:
-          - targets: ['redis-exporter.default.svc.cluster.local:9121']
+          - targets: ['redis-exporter.default.svc.cluster.local:9121']  # Vérifiez que l'exporter Redis est bien déployé et accessible

@@ -3,10 +3,8 @@ kind: Service
 metadata:
   name: backend-service
 spec:
-  selector:
-    app: backend
   ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 3000
-  type: ClusterIP  # Le type est ClusterIP
+    - port: 3000    # Le port où ton service backend est accessible
+      targetPort: 3000  # Le port sur lequel ton backend écoute
+  selector:
+    app: backend    # Le label correspondant à ton déploiement

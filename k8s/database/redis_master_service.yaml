@@ -2,11 +2,12 @@ apiVersion: v1
 kind: Service
 metadata:
   name: redis-master-service
+  namespace: default
 spec:
   selector:
     app: redis
   ports:
     - protocol: TCP
       port: 6379
-      targetPort: 6379  # Associe le port 6379 à Redis
-  clusterIP: None  # Service sans adresse IP spécifique pour la découverte DNS dans Kubernetes
+      targetPort: 6379
+  type: LoadBalancer

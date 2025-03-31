@@ -2,8 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: grafana
-  labels:
-    app: grafana
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -15,17 +14,10 @@ spec:
         app: grafana
     spec:
       containers:
-      - name: grafana
-        image: grafana/grafana:latest
-        ports:
-        - containerPort: 3000
-        env:
-          - name: GF_SECURITY_ADMIN_PASSWORD
-            value: "admin"  # Change this for production use
-        volumeMounts:
-        - name: grafana-dashboards
-          mountPath: /etc/grafana/provisioning/dashboards
-      volumes:
-      - name: grafana-dashboards
-        configMap:
-          name: grafana-dashboards  # Make sure this ConfigMap exists
+        - name: grafana
+          image: grafana/grafana:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              value: 'admin'  # Changez le mot de passe si nécessaire

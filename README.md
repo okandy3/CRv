@@ -1,5 +1,7 @@
 # CRV
 
+# Participant : Kitoko David & Kandil Omar 
+
 # Guide de Mise en Place et Déploiement du Projet
 ## 📋 Table des matières
 

@@ -1,12 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: backend
-spec:
-  selector:
+  name: backend-service
+  labels:
     app: backend
+spec:
   ports:
-    - protocol: TCP
-      port: 7000            # Port externe exposé
-      targetPort: 7000    # Port interne
-  type: LoadBalancer        
+    - port: 7000        # Le port sur lequel ton service sera accessible à l'intérieur du cluster
+      targetPort: 7000   # Le port sur lequel ton backend écoute
+  selector:
+    app: backend        # Le label qui permet de sélectionner les pods backend associés à ce service
+  type: ClusterIP       # Spécifie que le service est de type ClusterIP (accès interne uniquement)

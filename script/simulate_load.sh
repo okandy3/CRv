@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # URL du backend (remplace par l'URL correcte de ton backend)
-BASE_URL="http://<TON_BACKEND_URL>"
+BASE_URL='redis://localhost:6379'
 
 # Nombre de requêtes à envoyer
 NUM_REQUESTS=1000

@@ -1,3 +1,6 @@
+### Partipants: Kitoko David Kandil Omar
+
+
 Scénarios intéressants
 Ressources allouées
 Pour obtenir des résultats réalistes et intéressants on veut limiter les ressources de conteneurs. En effet dans le cas de déploiement sur des serveurs dans le cloud ou chez un fournisseurs de machine virtuelle les machines ont rarement autant de ressources que nos ordinateurs.
@@ -29,7 +32,7 @@ Les ressources sont limitées pour simuler des environnements de production. L'a
 Nous limitons les ressources CPU et mémoire pour chaque composant du projet afin de simuler un environnement de production avec des ressources limitées.
 
 **Commandes :**
-- Pour appliquer les ressources limitées, vérifie les fichiers YAML de déploiement dans `k8s/` (comme `redis_master.yaml`, `backend/deploy_js.yaml`).
+- Pour appliquer les ressources limitées, vérifie les fichiers YAML de déploiement dans `k8s/` (comme `redis_master.yaml`, `backend/deploy_backend.yaml`).
 
 Exemple de **backend** avec ressources limitées :
 ``
@@ -59,8 +62,9 @@ Déploiement de l'ensemble de l'application :
 
 Vérifier que Prometheus collecte bien les métriques :
 
-kubectl get pods -n monitoring
+kubectl port-forward svc/prometheus 9090:9090
 
+Accédez ensuite à http://localhost:9090 dans votre navigateur.
 
 kubectl port-forward svc/grafana 3000:3000 -n monitoring
 
@@ -74,4 +78,4 @@ Simulation de charge utilisateur :
 
 Vérification de l'état de l'auto-scaling : 
 
-kubectl get hpa
+./script/status.sh

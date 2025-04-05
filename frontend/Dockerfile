@@ -1,29 +1,20 @@
-# Utiliser l'image officielle de Node.js pour construire l'app
-FROM node:16 AS build
+# Étape 1 : Construction de l'application React
+FROM node:16-alpine AS build
 
-# Créer et définir le répertoire de travail
 WORKDIR /app
-
-# Copier package.json et yarn.lock
-COPY package.json yarn.lock ./
-
-# Installer les dépendances
-RUN yarn install
-
-# Copier tout le code source
 COPY . .
 
-# Construire l'application React pour la production
+RUN yarn install
 RUN yarn build
 
-# Utiliser une image Nginx pour servir l'app construite
+# Étape 2 : Serveur pour l'application React
 FROM nginx:alpine
 
-# Copier le build de React vers le répertoire de Nginx
+# Copie les fichiers construits par React
 COPY --from=build /app/build /usr/share/nginx/html
 
-# Exposer le port 80 pour que Nginx puisse servir l'app
+# Expose le port 80
 EXPOSE 80
 
-# Lancer Nginx
+# Démarre le serveur Nginx pour servir les fichiers statiques
 CMD ["nginx", "-g", "daemon off;"]

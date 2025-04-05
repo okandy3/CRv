@@ -3,8 +3,8 @@ kind: Service
 metadata:
   name: redis-exporter
 spec:
-  ports:
-  - port: 9121
-    targetPort: 9121
   selector:
     app: redis-exporter
+  ports:
+    - port: 9121
+      targetPort: 9121

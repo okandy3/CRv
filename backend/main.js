@@ -6,7 +6,7 @@ import promMid from 'express-prometheus-middleware'
 
 const REDIS_URL = process.env.REDIS_URL || 'redis://localhost:6379'
 const REDIS_REPLICAS_URL = process.env.REDIS_REPLICAS_URL || REDIS_URL
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 7000
 const UUID = v4()
 
 

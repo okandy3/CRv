@@ -1,274 +1,77 @@
-# CRV
+Scénarios intéressants
+Ressources allouées
+Pour obtenir des résultats réalistes et intéressants on veut limiter les ressources de conteneurs. En effet dans le cas de déploiement sur des serveurs dans le cloud ou chez un fournisseurs de machine virtuelle les machines ont rarement autant de ressources que nos ordinateurs.
 
-# Participants : Kitoko David & Kandil Omar 
+Par exemple les VM d’aws EC2 de base ont 2 giga de ram et 1 seul CPU. On veut donc limiter de la même manière les ressources données à notre serveur et à sa base à l’aide des conteneur kubernetes.
 
-# Guide de Mise en Place et Déploiement du Projet
-## 📋 Table des matières
+Charge
+L’autre chose que l’on veut simuler c’est l’utilisation de l’application, et donc simuler des utilisateurs qui se connectent et utilise le serveur. Pour ça le plus simple et de créer un script (bash, python ou js) qui lance des requêtes HTTP sur le endpoint du serveur.
 
-## Introduction
+Pensez bien à varier les types d’utilisations : Le comportement du serveur et de sa base peuvent varier si les utilisateurs font seulement de la lecture ou si il y a également des écritures en base de données. Pour ça veillez bien à utiliser les différents endpoints du serveur (create, request, update, delete).
 
-Prérequis 
+Monté à l’échelle
+Lorsque que le serveur est beaucoup sollicité il est possible de dupliquer l’instance de pod du serveur. Il est possible de le faire manuellement ou avec une configuration qui l’automatise avec les deploiement kubernetes. (Il est très interessant d’observer quelles conditions d’utilisations déclenchent ce genre de monté à l’échelle automatique).
 
-Architecture du Projet
 
-Création des images
 
-Déploiement Kubernetes
+# Scénarios de Test pour l'Application avec Kubernetes, Redis, Node.js et React
 
-Étapes de déploiement
+## 1. Architecture du Projet
+Le projet déploie une application avec une base de données **Redis** en mode **Master/Replica**, un **Backend Node.js** pour gérer les requêtes API, et un **Frontend React** pour l'interface utilisateur.
 
-# **Guide de Mise en Place et Déploiement du Projet**
-
-## 📋 **Table des matières**
-1. [Introduction](#introduction)
-2. [Prérequis](#prérequis)
-3. [Architecture du Projet](#architecture-du-projet)
-4. [Création des images](#Création-des-images)
-5. [Déploiement Kubernetes](#déploiement-kubernetes)
-    * [Étapes de déploiement](#étapes-de-déploiement)
-6. [Mise en Place de Prometheus et Grafana](#mise-en-place-de-prometheus-et-grafana)
-7. [Automatisation via Scripts](#automatisation-via-scripts)
-
+Les ressources sont limitées pour simuler des environnements de production. L'auto-scaling est configuré pour adapter le nombre de réplicas du backend et de Redis en fonction de la charge. Le monitoring est mis en place avec **Prometheus** et **Grafana**.
 
 ---
 
-## 🛠 **1. Introduction**
+## 2. Scénarios de Test
 
-Ce projet consiste à déployer une **application stateless Node.js** connectée à une **base de données Redis**, le tout orchestré avec **Kubernetes**. Des outils de **monitoring**, comme **Prometheus** et **Grafana**, seront également mis en place pour surveiller les performances de l'infrastructure.
+### 2.1 **Limiter les Ressources Allouées aux Conteneurs**
+Nous limitons les ressources CPU et mémoire pour chaque composant du projet afin de simuler un environnement de production avec des ressources limitées.
 
----
+**Commandes :**
+- Pour appliquer les ressources limitées, vérifie les fichiers YAML de déploiement dans `k8s/` (comme `redis_master.yaml`, `backend/deploy_js.yaml`).
 
-## 🔧 **2. Prérequis**
+Exemple de **backend** avec ressources limitées :
+``
+resources:
+  requests:
+    memory: "512Mi"
+    cpu: "500m"
+  limits:
+    memory: "1Gi"
+    cpu: "1"
 
-Avant de commencer le déploiement, assurez-vous d'avoir les outils suivants installés sur votre machine :
-- [Docker](https://www.docker.com/products/docker-desktop)
-- [Kubernetes (kubectl)](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-- [Minikube](https://minikube.sigs.k8s.io/docs/) ou un cluster Kubernetes fonctionnel
-- [Prometheus](https://prometheus.io/docs/introduction/overview/) et [Grafana](https://grafana.com/docs/grafana/latest/getting-started/)
 
----
+### 2.2 **Simuler la Charge Utilisateur**
 
-## 🏗 **3. Architecture du Projet**
+Simulation des utilisateurs qui effectuent des actions sur l'application en envoyant des requêtes HTTP sur les différents endpoints (GET, POST, PUT, DELETE).
 
-crv  
-├── backend  
-│   ├── .dockerignore  
-│   ├── .gitignore  
-│   ├── Dockerfile  
-│   ├── main.js  
-│   ├── package.json  
-│   ├── yarn.lock  
-├── frontend  
-│   ├── public/  
-│   ├── src/  
-│   ├── Dockerfile  
-│   ├── package.json  
-│   └── yarn.lock  
-├── k8s  
-│   ├── backend  
-│   │   ├── autoscaling_js.yaml  
-│   │   ├── deploy_js.yaml  
-│   │   ├── service_js.yaml  
-│   ├── frontend  
-│   │   ├── deploy_react.yaml  
-│   │   └── react_service.yaml  
-│   ├── database  
-│   │   ├── redis_autoscaling.yaml  
-│   │   ├── redis_master_service.yaml  
-│   │   ├── redis_replicas_service.yaml  
-│   │   ├── redis_master.yaml  
-│   │   ├── redis_replicas.yaml  
-│   │    
-│   │     
-│   ├── monitoring  
-│   │   ├── deploy_grafana.yaml  
-│   │   ├── deploy_promeu.yaml  
-│   │   ├── promeu_config.yaml  
-│   │   ├── promeu_service.yaml  
-│   │   └── grafana_service.yaml  
-├── script  
-│   ├── delete_all.sh  
-│   ├── deploy_all.sh  
-│   ├── scale_test.sh  
-│   ├── status.sh  
-│   
-├── README.md  
+Exécuter le script pour simuler la charge :
+./scripts/simulate_load.sh
 
-## 4. Création des images 
 
-***Docker depuis Minikube***
+### 2.3 **Monter à l’Échelle Automatiquement avec Kubernetes**
 
-eval $(minikube -p minikube docker-env)
 
-***Créer l'Image Docker pour le Backend Node.js***
+Déploiement de l'ensemble de l'application :
 
-cd crv/backend
-
-docker build -t redis-nodejs-backend:latest .
-
-
-
-Vérifier la création de l'image :
-docker images
-
-
-***Créer l'Image Docker pour le Frontend React***
-
-cd crv/frontend
-
-docker build -t redis-nodejs-frontend:latest .
-
-
-***Créer l'image officielle Redis***
-
-docker pull redis
-
-
-
-
-## 5. Déploiement Kubernetes
-Étapes de déploiement
-Voici les étapes pour déployer l'infrastructure Kubernetes à l'aide des fichiers YAML fournis :
-
-Démarrage du Cluster Kubernetes avec Minikube :
-
-minikube start
-
-Vérifiez que Kubernetes fonctionne :
-
-kubectl get nodes
-
-***Déployer le Backend Node.js*** 
-
-Naviguez dans le répertoire k8s/backend/ et déployez le backend avec le fichier deploy_js.yaml 
-
-***commandes :***
-
-kubectl apply -f deploy_js.yaml
-
-kubectl apply -f service_js.yaml
-
-kubectl apply -f autoscaling_js.yaml
-
-
-***Déployer le Frontend React (non scalé)***
-
-Naviguez dans le répertoire k8s/frontend/ et déployez le frontend.
-
-***commmandes :*** 
-
-kubectl apply -f deploy_react.yaml
-
-kubectl apply -f react_service.yaml
-
-
-
-***Déployer Redis avec Autoscaling***
-
-Allez dans le dossier k8s/database/ et appliquez les fichiers de déploiement Redis.
-
-***commandes :*** 
-
-kubectl apply -f redis_master.yaml
-
-kubectl apply -f redis_replicas.yaml
-
-kubectl apply -f redis_master_service.yaml
-
-kubectl apply -f redis_replicas_service.yaml
-
-kubectl apply -f redis_autoscaling.yaml
-
-
-
-***Déployer Prometheus et Grafana pour Monitoring***
-
-Allez dans le répertoire k8s/monitoring/ et déployez Prometheus et Grafana.
-
-***commandes :***
-
-kubectl apply -f deploy_promeu.yaml
-
-kubectl apply -f promeu_service.yaml
-
-kubectl apply -f deploy_grafana.yaml
-
-kubectl apply -f grafana_service.yaml
-
-
-
-## 6. Mise en Place de Prometheus et Grafana
-Prometheus est configuré pour surveiller le backend Node.js et Redis. Le tableau de bord Grafana est pré-configuré pour afficher les données de performance et de scaling.
-
-Accéder à Prometheus :
-Après avoir déployé Prometheus, vous pouvez y accéder via son service Kubernetes exposé (en utilisant kubectl port-forward ou en configurant un service de type LoadBalancer).
-
-commande : 
-kubectl port-forward svc/prometheus 9090:9090
-
-Accédez ensuite à http://localhost:9090 dans votre navigateur.
-
-url prometheus : minikube service prometheus --url
-
-
-Accéder à Grafana :
-Grafana est déployé avec un tableau de bord de base pour visualiser les métriques.
-
-commande : 
-kubectl port-forward svc/grafana 3000:3000
-
-Accédez ensuite à http://localhost:3000 avec les identifiants par défaut :
-Username : admin
-Password : admin
-
-installation du service metrics-server :
- 
-kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.5.0/components.yaml
-
-kubectl patch deployment metrics-server -n kube-system --type='json' \
-    -p='[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--kubelet-insecure-tls"}]'
-
-
-
-## 7. Automatisation via Scripts
-***Vous avez plusieurs scripts disponibles pour faciliter le déploiement, la mise à l'échelle, et la gestion de votre infrastructure Kubernetes :***
-
-***deploy_all.sh :***
-Déploie toutes les ressources nécessaires (backend, frontend, Redis, Prometheus, Grafana).
-\
-***commande :***
-\
-chmod +x script/deploy_all.sh
-\
 ./script/deploy_all.sh
-\
-\
-***delete_all.sh :***
-Supprime toutes les ressources Kubernetes du cluster.
-\
-***commande :***
-\
-chmod +x script/delete_all.sh
-\
-./script/delete_all.sh
-\
-\
-***scale_test.sh :***
-Simule une charge pour tester l’AutoScaling de Redis.
-\
-***commande :*** 
-\
-chmod +x script/scale_test.sh
-\
-./script/scale_test.sh
-\
-\
-***status.sh :***
-Affiche l'état des pods, services, et HPA.
-\
-***commande :***
-\
-chmod +x script/status.sh
-\
-./script/status.sh
 
+Vérifier que Prometheus collecte bien les métriques :
+
+kubectl get pods -n monitoring
+
+
+kubectl port-forward svc/grafana 3000:3000 -n monitoring
+
+Accède à http://localhost:3000 et connecte-toi avec les identifiants par défaut
+
+
+Simulation de charge utilisateur : 
+
+./script/simulate_load.sh
+
+
+Vérification de l'état de l'auto-scaling : 
+
+kubectl get hpa

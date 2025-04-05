@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: grafana
-  namespace: default
 spec:
   replicas: 1
   selector:
@@ -18,6 +17,3 @@ spec:
           image: grafana/grafana:latest
           ports:
             - containerPort: 3000
-          env:
-            - name: GF_SECURITY_ADMIN_PASSWORD
-              value: 'admin'  # Changez le mot de passe si nécessaire

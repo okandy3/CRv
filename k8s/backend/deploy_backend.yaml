@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: arthurescriou/node-redis:1.0.6  # Remplace par ton image
+          ports:
+            - containerPort: 7000  # Mise à jour du port pour correspondre au Dockerfile
+          resources:
+            limits:
+              cpu: "1"
+              memory: "128Mi"
+            requests:
+              cpu: "128m"
+              memory: "128Mi"
+          env:
+            - name: PORT
+              value: "7000"  # Définir la variable d'environnement pour correspondre au Dockerfile
+          readinessProbe:
+            httpGet:
+              path: /metrics   # Point d'accès pour vérifier la disponibilité
+              port: 7000       # Le port doit correspondre au containerPort
+            initialDelaySeconds: 5  # Temps avant de commencer les probes
+            periodSeconds: 5        # Fréquence des probes
+            failureThreshold: 3     # Nombre d'échecs avant de considérer l'application comme non prête
+          livenessProbe:
+            httpGet:
+              path: /health  # Point d'accès pour vérifier la santé
+              port: 7000     # Le port doit correspondre au containerPort
+            initialDelaySeconds: 10  # Temps avant de commencer les probes
+            periodSeconds: 10        # Fréquence des probes
+            failureThreshold: 3      # Nombre d'échecs avant de redémarrer le pod

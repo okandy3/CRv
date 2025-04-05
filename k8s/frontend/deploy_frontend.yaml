@@ -1,28 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: redis-master
+  name: frontend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: redis
-      role: master
+      app: frontend
   template:
     metadata:
       labels:
-        app: redis
-        role: master
+        app: frontend
     spec:
       containers:
-        - name: redis
-          image: redis:7
+        - name: frontend
+          image: dave392/my-react-app:latest
           ports:
-            - containerPort: 6379
+            - containerPort: 80
           resources:
             requests:
               memory: "64Mi"
-              cpu: "250m"
+              cpu: "100m"
             limits:
-              memory: "128Mi"
-              cpu: "500m"
+              memory: "256Mi"
+              cpu: "300m"

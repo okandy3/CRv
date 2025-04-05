@@ -13,9 +13,10 @@ spec:
         app: redis-exporter
     spec:
       containers:
-      - name: redis-exporter
-        image: oliver006/redis_exporter:latest  # Utilisation de la bonne image
-        args:
-        - "--redis.addr=redis://redis-master-service:6379"  # Connexion à Redis sans mot de passe
-        ports:
-        - containerPort: 9121
+        - name: redis-exporter
+          image: oliver006/redis_exporter
+          ports:
+            - containerPort: 9121
+          env:
+            - name: REDIS_ADDR
+              value: "redis://redis-master:6379"

@@ -1,4 +1,4 @@
-### Partipants: Kitoko David Kandil Omar
+### Partipants: Kitoko David et Kandil Omar
 
 
 Scénarios intéressants

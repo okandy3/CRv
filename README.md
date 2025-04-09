@@ -66,7 +66,7 @@ kubectl port-forward svc/prometheus 9090:9090
 
 Accédez ensuite à http://localhost:9090 dans votre navigateur.
 
-kubectl port-forward svc/grafana 3000:3000 -n monitoring
+kubectl port-forward svc/grafana 3000:3000 
 
 Accède à http://localhost:3000 et connecte-toi avec les identifiants par défaut
 

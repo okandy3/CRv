@@ -1,58 +1,56 @@
 #!/bin/bash
 
-# URL du backend (remplace par l'URL correcte de ton backend)
-BASE_URL_NODEJS='http://localhost:7000/endpoint'  # Assurez-vous que ce soit le bon point de terminaison pour Node.js
-BASE_URL_REDIS='redis://localhost:6379'           # URL pour Redis (si vous avez un service Redis)
+# URL des services dans le cluster Kubernetes
+BASE_URL_NODEJS='http://backend-service:7000'  # Service Node.js exposé
+REDIS_HOST='redis-master-service'                      # Service Redis maître
 
 # Nombre de requêtes à envoyer
 NUM_REQUESTS=1000
 
-# Afficher un message de début
-echo "🌐 Simulation de charge sur l'API Node.js et Redis..."
+# Affichage du message de démarrage
+echo "🌐 Simulation de charge sur l'API Node.js..."
 
-# Boucle pour envoyer les requêtes vers Node.js
 for i in $(seq 1 $NUM_REQUESTS)
 do
     # Requête GET sur Node.js
-    echo "🔍 Requête GET (Node.js) : $i"
-    curl -s "$BASE_URL_NODEJS" > /dev/null
+    echo "🔍 Requête GET / (Node.js) : $i"
+    curl -s "$BASE_URL_NODEJS/" > /dev/null
 
-    # Requête POST sur Node.js
-    echo "📝 Requête POST (Node.js) : $i"
-    curl -s -X POST "$BASE_URL_NODEJS" -d '{"key": "value"}' -H "Content-Type: application/json" > /dev/null
+    # Requête POST sur /item de Node.js (création)
+    echo "📝 Requête POST /item (Node.js) : $i"
+    curl -s -X POST "$BASE_URL_NODEJS/item" \
+        -H "Content-Type: application/json" \
+        -d '{"id": "test-key", "val": "value"}' > /dev/null
 
-    # Requête PUT sur Node.js
-    echo "✏️ Requête PUT (Node.js) : $i"
-    curl -s -X PUT "$BASE_URL_NODEJS/1" -d '{"key": "updated_value"}' -H "Content-Type: application/json" > /dev/null
-
-    # Requête DELETE sur Node.js
-    echo "🗑 Requête DELETE (Node.js) : $i"
-    curl -s -X DELETE "$BASE_URL_NODEJS/1" > /dev/null
+    # Requête DELETE sur /item de Node.js (suppression)
+    echo "🗑 Requête DELETE /item (Node.js) : $i"
+    curl -s -X DELETE "$BASE_URL_NODEJS/item" \
+        -H "Content-Type: application/json" \
+        -d '{"id": "test-key"}' > /dev/null
 
     # Pause aléatoire entre 0 et 1 seconde pour simuler un comportement utilisateur naturel
     sleep $(echo "scale=2; $RANDOM/32768" | bc)
 done
 
-# Simulation de charge pour Redis
 echo "🚀 Simulation de charge sur Redis..."
 
 for i in $(seq 1 $NUM_REQUESTS)
 do
-    # Lecture (GET) sur Redis
+    # Requête GET sur Redis
     echo "🔍 Requête GET (Redis) : $i"
-    curl -s "$BASE_URL_REDIS/endpoint" > /dev/null
+    redis-cli -h "$REDIS_HOST" -p 6379 GET test-key > /dev/null
 
-    # Création (SET) sur Redis
+    # Requête SET sur Redis
     echo "📝 Requête SET (Redis) : $i"
-    curl -s -X SET "$BASE_URL_REDIS" -d '{"key": "value"}' > /dev/null
+    redis-cli -h "$REDIS_HOST" -p 6379 SET test-key "value" > /dev/null
 
-    # Mise à jour (SET) sur Redis
-    echo "✏️ Requête SET (Redis) : $i"
-    curl -s -X SET "$BASE_URL_REDIS" -d '{"key": "updated_value"}' > /dev/null
+    # Mise à jour de la clé dans Redis
+    echo "✏️ Requête SET updated (Redis) : $i"
+    redis-cli -h "$REDIS_HOST" -p 6379 SET test-key "updated_value" > /dev/null
 
-    # Suppression (DEL) sur Redis
+    # Suppression de la clé dans Redis
     echo "🗑 Requête DEL (Redis) : $i"
-    curl -s -X DEL "$BASE_URL_REDIS" > /dev/null
+    redis-cli -h "$REDIS_HOST" -p 6379 DEL test-key > /dev/null
 
     # Pause aléatoire entre 0 et 1 seconde pour simuler un comportement utilisateur naturel
     sleep $(echo "scale=2; $RANDOM/32768" | bc)

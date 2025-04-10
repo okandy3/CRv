@@ -83,6 +83,6 @@ app.get('/items', (req, res) => {
   readClient.keys('*').then((keys) => res.send(JSON.stringify(keys)))
 })
 
-app.listen(port, () => {
-  log(`listening at http://localhost:${port} server ${UUID}`)
+app.listen(port, '0.0.0.0', () => {
+  log(`listening at http://0.0.0.0:${port} server ${UUID}`)
 })

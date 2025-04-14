@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-main
+  namespace: observabilite
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+      role: main
+  template:
+    metadata:
+      labels:
+        app: redis
+        role: main
+    spec:
+      containers:
+      - name: redis
+        image: redis:7
+        ports:
+        - containerPort: 6379
+        resources:
+          requests:
+            cpu: "200m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+        volumeMounts:
+        - name: redis-data
+          mountPath: /data
+        args: ["--appendonly", "yes"]
+      volumes:
+      - name: redis-data
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-main
+  namespace: observabilite
+spec:
+  selector:
+    app: redis
+    role: main
+  ports:
+    - port: 6379

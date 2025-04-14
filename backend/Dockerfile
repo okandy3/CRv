@@ -14,7 +14,7 @@ RUN yarn install
 COPY . .
 
 # Exposer le port sur lequel l'app va tourner
-EXPOSE 3000
+EXPOSE 8080
 
 # Démarrer le serveur Node.js
 CMD ["node", "main.js"]

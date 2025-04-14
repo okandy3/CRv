@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-redis
+  namespace: observabilite
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node-redis
+  template:
+    metadata:
+      labels:
+        app: node-redis
+    spec:
+      containers:
+      - name: node-redis
+        image: arthurescriou/node-redis:1.0.6
+        ports:
+        - containerPort: 3000
+        env:
+        - name: REDIS_URL
+          value: "redis://redis-main.observabilite.svc.cluster.local:6379"
+        - name: REDIS_REPLICAS_URL
+          value: "redis://redis-main.observabilite.svc.cluster.local:6379"
+        resources:
+          requests:
+            cpu: "200m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: node-redis
+  namespace: observabilite
+spec:
+  selector:
+    app: node-redis
+  ports:
+    - port: 8080        # Ajouter le port 8080 si l'application écoute dessus à l'intérieur du conteneur
+      targetPort: 8080   # Si l'application écoute sur le port 8080 à l'intérieur du conteneur
+

@@ -1,0 +1,11 @@
+{
+    "name": "loadTest",
+    "version": "1.0.0",
+    "main": "index.js",
+    "type": "module",
+    "license": "MIT",
+    "dependencies": {
+        "fetch": "^1.1.0",
+        "node": "^23.11.0"
+    }
+}

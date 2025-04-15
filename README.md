@@ -8,10 +8,12 @@
 │   ├── main.js
 │   ├── package.json
 │   └── ...
+│
 ├── frontend/
 │   ├── Dockerfile
 │   ├── package.json
 │   └── ...
+│
 ├── k8s/
 │   ├── namespace.yaml
 │   ├── redis-main-deployment.yaml
@@ -21,12 +23,15 @@
 │   ├── prometheus-deployment.yaml
 │   ├── grafana-deployment.yaml
 │   └── hpa-node.yaml
+│
 ├── loadTest/
 │   ├── fetchData.js
 │   └── scenario.sh
+│
 ├── deploy.sh
 ├── port_forward.sh
 └── status.sh
+
 
 
 # 1️⃣ Démarrer Minikube avec un profil dédié "observabilite"

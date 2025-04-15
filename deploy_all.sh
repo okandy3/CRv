@@ -43,12 +43,3 @@ kubectl wait --for=condition=available --timeout=180s deployment --all -n $NAMES
 
 echo "✅ TOUS LES PODS SONT PRÊTS"
 
-echo "== 🧪 LANCEMENT DES TESTS DE CHARGE =="
-
-# Lancer les tests de charge (adapter l'URL si nécessaire)
-cd loadTest
-./scenario.sh $URL
-
-echo "✅ TESTS TERMINÉS"
-
-echo "== ✅ TOUT EST FAIT ✅ =="

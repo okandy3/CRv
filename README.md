@@ -4,7 +4,7 @@
 
 # Architecture du projet
 
-## /projet
+## /CRv
 - `backend/`
   - `Dockerfile`
   - `main.js`
